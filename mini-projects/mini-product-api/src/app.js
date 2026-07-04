@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
@@ -43,6 +44,24 @@ app.get('/products/:id', (req, res) =>{
         res.status(404).json({ error: 'Product not found' });
     }
 });
+
+app.post('/products', (req, res) => {
+  const name =req.body.name;
+  const price = req.body.price;
+  if (!name ||!price){
+    return res.status(400).json({error: 'please provide both name and price'});
+  } 
+
+  const newProduct ={
+    id: products.length +1,
+    name:name,
+    price:price
+};
+ products.push(newProduct);
+ res.status(201).json(newProduct);
+});
+
+
 
 
 module.exports = app;
